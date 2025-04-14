@@ -1,0 +1,57 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #9c9c9c;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+h1 {
+    color: #333;
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+/* Основной контент и контейнер */
+.container {
+    display: flex;
+    flex: 1;
+}
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Элементы управления */
+.controls {
+    margin-bottom: 20px;
+    text-align: center;
+}
+.controls input {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.controls button {
+    padding: 8px 16px;
+    background-color: #1d572d;  
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.controls button:hover {
+    background-color: #6B9071;
+}
+
+.hide{
+    display: none;
+}
+

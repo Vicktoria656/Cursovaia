@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DB Online</title>
+    <link rel="stylesheet" href="Styles/main.css">
+    <link rel="stylesheet" href="Styles/menu.css">
+    <link rel="stylesheet" href="Styles/modal.css">
+    <link rel="stylesheet" href="Styles/Left-sidebar.css">
+    <link rel="stylesheet" href="Styles/table.css">
+    <link rel="stylesheet" href="Styles/create.css">
+
+</head>
+<body>
+
+      <!-- Меню -->
+    <div class="menu">
+        <div class="menu-tab active" data-content="main">Главная</div>
+        <div class="menu-tab" data-content="create">Создание</div>
+        <div class="menu-tab" data-content="frontData">Внешние данные</div>
+        <div class="menu-tab" data-content="tableWork">Работа с таблицами</div>
+    </div>
+
+    <!-- Контейнер для боковой панели и основного контента -->
+    <div class="container"  id="main" style="visibility: visible">
+        <!-- Боковая панель -->
+        <div class="sidebar">
+            <h2>Таблицы</h2>
+            <ul>
+                
+                
+            </ul>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="main-content">
+            <h1 id="table-title">Клиенты</h1>
+
+          
+           
+
+        </div>
+    </div>
+
+
+    
+
+    
+    <div class="container hide" id="create">
+        
+        <div class="creation-tab">
+            <h2>Создание новой таблицы</h2>
+            
+            <!-- Блок выбора типа создания -->
+            <div class="creation-options">
+                <button class="active" data-mode="manual">Ручное создание</button>
+                <button data-mode="template">Из шаблона</button>
+                <button data-mode="import">Импорт структуры</button>
+            </div>
+            
+            <!-- Основное рабочее пространство -->
+            <div class="workspace">
+                <div class="configuration-panel">
+                    <!-- Ручное создание (по умолчанию видимо) -->
+                    <div id="manual-creation">
+                        <h3>Настройки таблицы</h3>
+                        <div class="form-group">
+                            <label for="table-name">Название таблицы:</label>
+                            <input type="text" id="table-name" placeholder="Моя таблица">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="col-count">Количество столбцов: 0</label>
+                            <button type="button" onclick="addCol()">Создать столбец</button>
+                            <br>
+                            <input type="text" style="width: 69%;" id="col-name" value="Название столбца">
+                            <select name="" id="col-type">
+                                <option value="string">string</option>
+                                <option value="number">number</option>
+                                <option value="boolean">boolean</option>
+                                <option value="date">date</option>
+                            </select>
+
+                        </div>
+                        
+                      
+                        <div class="form-group">
+                            <label for="col-count">Количество строчек:</label>
+                            <input type="number" id="row-count" min="1" value="5">
+                        </div>
+                    </div>
+                    
+                    <!-- Выбор шаблона (изначально скрыто) -->
+                    <div id="template-creation" class="hide">
+                        <h3>Выберите шаблон</h3>
+                        <div class="templates-grid">
+                            <div class="template-card" onclick="selectTemplate('CONTACTS')">
+                                <h4>Контакты</h4>
+                                <ul>
+                                    <li>Имя (текст)</li>
+                                    <li>Телефон (текст)</li>
+                                    <li>Email (текст)</li>
+                                </ul>
+                            </div>
+                            <div class="template-card" onclick="selectTemplate('INVENTORY')">
+                                <h4>Склад</h4>
+                                <ul>
+                                    <li>Товар (текст)</li>
+                                    <li>Количество (число)</li>
+                                    <li>Цена (валюта)</li>
+                                </ul>
+                            </div>
+                            <div class="template-card" onclick="selectTemplate('TASKS')">
+                                <h4>Задачи</h4>
+                                <ul>
+                                    <li>Задача (текст)</li>
+                                    <li>Срок (дата)</li>
+                                    <li>Статус (выбор)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Импорт структуры (изначально скрыто) -->
+                    <div id="import-creation" class="hide">
+                        <h3>Импорт структуры</h3>
+                        <p>Загрузите JSON-файл с описанием структуры таблицы:</p>
+                        <button class="secondary" onclick="importStructure()">Выбрать файл</button>
+                        <div id="import-preview" style="margin-top: 20px;"></div>
+                    </div>
+                </div>
+                
+                <div class="preview-panel">
+                    <h3>Предпросмотр</h3>
+                    <div id="table-preview">
+                        <p>Здесь будет отображаться предпросмотр вашей таблицы</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="secondary" onclick="clearForm()">Очистить</button>
+                <button class="secondary" onclick="saveAsTemplate()">Сохранить шаблон</button>
+                <button class="primary" onclick="createTable()">Создать таблицу</button>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+    <div class="container hide" id="frontData">
+
+    </div>
+
+
+    <div class="container hide" id="tableWork">
+
+    </div>
+
+
+
+    <script src="JS/left-sidebar.js"></script>
+    <script src="JS/main.js"></script>
+    <script src="JS/menu.js"></script>
+    <script src="JS/create.js"></script>
+</body>
+</html>
+
