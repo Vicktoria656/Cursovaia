@@ -73,8 +73,9 @@
                         <div class="form-group">
                             <label for="col-count">Количество столбцов: 0</label>
                             <button type="button" onclick="addCol()">Создать столбец</button>
+                            <button type="button" style="margin-left: 10px;" onclick="delCol()">Удалить последний столбец</button>
                             <br>
-                            <input type="text" style="width: 69%;" id="col-name" value="Название столбца">
+                            <input type="text" style="width: 69%;" id="col-name" onchange = "addCol()" value="Название столбца">
                             <select name="" id="col-type">
                                 <option value="string">string</option>
                                 <option value="number">number</option>
@@ -135,6 +136,7 @@
                     <h3>Предпросмотр</h3>
                     <div id="table-preview">
                         <p>Здесь будет отображаться предпросмотр вашей таблицы</p>
+                        <h3 style="text-align: center;" id="preview-title"></h3>
                     </div>
                 </div>
             </div>

@@ -15,6 +15,10 @@ const changeActiveTable = function(ev) {
     }
 
     const newContainer = document.getElementById(elem.dataset.table)
+    const mainContent = document.querySelector('h1#table-title')
+    mainContent.textContent = ev.target.textContent
+    
+    
 
     
     newContainer.classList.remove('hide')
