@@ -6,7 +6,7 @@
     <title>DB Online</title>
     <link rel="stylesheet" href="Styles/main.css">
     <link rel="stylesheet" href="Styles/menu.css">
-    <link rel="stylesheet" href="Styles/modal.css">
+    <link rel="stylesheet" href="Styles/tableWork.css">
     <link rel="stylesheet" href="Styles/Left-sidebar.css">
     <link rel="stylesheet" href="Styles/table.css">
     <link rel="stylesheet" href="Styles/create.css">
@@ -18,7 +18,6 @@
     <div class="menu">
         <div class="menu-tab active" data-content="main">Главная</div>
         <div class="menu-tab" data-content="create">Создание</div>
-        <div class="menu-tab" data-content="frontData">Внешние данные</div>
         <div class="menu-tab" data-content="tableWork">Работа с таблицами</div>
     </div>
 
@@ -153,13 +152,123 @@
     </div>
 
 
-    <div class="container hide" id="frontData">
-
-    </div>
-
-
-    <div class="container hide" id="tableWork">
-
+    
+    <div class="cont hide" id="tableWork">
+        <div class="table-relations-header">
+            <h2>Управление связями таблиц</h2>
+            <button id="closeRelations" class="close-btn">×</button>
+        </div>
+        
+        <div class="relations-container">
+            <!-- Левая панель - список таблиц -->
+            <div class="tables-list">
+                <h3><i class="fas fa-table"></i> Доступные таблицы</h3>
+                <div class="search-box">
+                    <input type="text" id="tableSearch" placeholder="Поиск таблиц...">
+                </div>
+                <ul id="tablesList" class="scrollable-list">
+                    <!-- Динамически заполняется через JS -->
+                </ul>
+            </div>
+            
+            <!-- Центральная панель - визуализация связей -->
+            <div class="relations-view">
+                <div class="view-controls">
+                    <button id="zoomIn" class="icon-btn" title="Увеличить" ><b>+</b></button>
+                    <button id="zoomOut" class="icon-btn" title="Уменьшить"><b>-</b></button>
+                    <button id="fitView" class="icon-btn" title="Подогнать по размеру"><b>=</b></button>
+                    <div class="view-mode">
+                        <label><input type="radio" name="viewMode" value="graph" checked> Граф</label>
+                        <label><input type="radio" name="viewMode" value="matrix"> Матрица</label>
+                    </div>
+                </div>
+                <div class="relations-graph" id="relationsGraph">
+                    <svg width="100%" height="100%">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+                                    refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#FFA000"/>
+                            </marker>
+                        </defs>
+                        <!-- Связи будут отрисованы здесь -->
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Правая панель - управление связями -->
+            <div class="relations-controls">
+                <div class="control-tabs">
+                    <div class="tab active" data-tab="create">Создать связь</div>
+                    <div class="tab" data-tab="manage">Управление</div>
+                </div>
+                
+                <div id="createRelationTab" class="tab-content active">
+                    <div class="form-group">
+                        <label for="sourceTable">Исходная таблица:</label>
+                        <select id="sourceTable" class="form-control">
+                            <option value="">-- Выберите таблицу --</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sourceColumn">Колонка:</label>
+                        <select id="sourceColumn" class="form-control" disabled>
+                            <option value="">-- Сначала выберите таблицу --</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="targetTable">Целевая таблица:</label>
+                        <select id="targetTable" class="form-control">
+                            <option value="">-- Выберите таблицу --</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="targetColumn">Колонка:</label>
+                        <select id="targetColumn" class="form-control" disabled>
+                            <option value="">-- Сначала выберите таблицу --</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="relationType">Тип связи:</label>
+                        <select id="relationType" class="form-control">
+                            <option value="one-to-one">Один к одному (1:1)</option>
+                            <option value="one-to-many">Один ко многим (1:N)</option>
+                            <option value="many-to-many">Многие ко многим (M:N)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="bidirectional"> Двунаправленная связь
+                        </label>
+                    </div>
+                    
+                    <button id="createRelationBtn" class="btn btn-primary">
+                        <i class="fas fa-link"></i> Создать связь
+                    </button>
+                </div>
+                
+                <div id="manageRelationTab" class="tab-content">
+                    <div class="current-relations scrollable-list">
+                        <h4>Текущие связи:</h4>
+                        <ul id="relationsList">
+                            <!-- Динамически заполняется через JS -->
+                        </ul>
+                    </div>
+                    <button id="deleteRelationBtn" class="btn btn-danger" disabled>
+                        <i class="fas fa-unlink"></i> Удалить выбранную связь
+                    </button>
+                    <div class="relation-stats">
+                        <h4>Статистика:</h4>
+                        <p>Всего связей: <span id="totalRelations">0</span></p>
+                        <p>Таблиц в графе: <span id="tablesInGraph">0</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -168,6 +277,7 @@
     <script src="JS/main.js"></script>
     <script src="JS/menu.js"></script>
     <script src="JS/create.js"></script>
+    <script src="JS/tableWork.js"></script>
 </body>
 </html>
 

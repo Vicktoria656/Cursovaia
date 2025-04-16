@@ -1,0 +1,279 @@
+#tableWork {
+  width: 100%;
+  height: 100vh;
+  background: #2e1b19;
+  color: #E0E0E0;
+  padding: 20px;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.cont {
+  display: block;
+}
+
+.table-relations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #5D4037;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #E0E0E0;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #FFA000;
+}
+
+.relations-container {
+  display: grid;
+  grid-template-columns: 250px 1fr 300px;
+  gap: 20px;
+  height: calc(100vh - 100px);
+}
+
+/* Стили для списка таблиц */
+.tables-list {
+  background: #1E1E1E;
+  padding: 15px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-box {
+  margin-bottom: 15px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 8px;
+  background: #333333;
+  border: 1px solid #5D4037;
+  border-radius: 3px;
+  color: #E0E0E0;
+}
+
+.scrollable-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scrollable-list li {
+  padding: 10px;
+  margin: 5px 0;
+  background: #333333;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.scrollable-list li:hover {
+  background: #5D4037;
+}
+
+.scrollable-list li.active {
+  background: #8D6E63;
+  font-weight: bold;
+}
+
+/* Стили для визуализации связей */
+.relations-view {
+  background: #1E1E1E;
+  padding: 15px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.view-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.icon-btn {
+  background: #333333;
+  border: none;
+  color: #E0E0E0;
+  width: 30px;
+  height: 30px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: #5D4037;
+}
+
+.view-mode {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.view-mode label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.relations-graph {
+  flex-grow: 1;
+  background: #262626;
+  border-radius: 5px;
+  position: relative;
+}
+
+/* Стили для панели управления */
+.relations-controls {
+  background: #1E1E1E;
+  padding: 15px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.control-tabs {
+  display: flex;
+  border-bottom: 1px solid #5D4037;
+  margin-bottom: 15px;
+}
+
+.control-tabs .tab {
+  padding: 8px 15px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.control-tabs .tab.active {
+  border-bottom: 2px solid #FFA000;
+  color: #FFA000;
+}
+
+.tab-content {
+  display: none;
+  flex-grow: 1;
+}
+
+.tab-content.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: flex;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.form-control {
+  width: 100% !important;
+  padding: 8px;
+  background: #333333;
+  border: 1px solid #5D4037;
+  border-radius: 3px;
+  color: #E0E0E0;
+}
+
+.btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.btn-primary {
+  background: #0277BD;
+  color: white;
+}
+
+.btn-danger {
+  background: #C62828;
+  color: white;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.relation-stats {
+  margin-top: auto;
+  padding-top: 15px;
+  border-top: 1px solid #5D4037;
+}
+
+/* Стили для SVG графа */
+.relation-node {
+  fill: #8D6E63;
+  stroke: #5D4037;
+  stroke-width: 2;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.relation-node:hover {
+  fill: #FFA000;
+  stroke: #E64A19;
+}
+
+.relation-node text {
+  fill: #E0E0E0;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.relation-link {
+  stroke: #FFA000;
+  stroke-width: 2;
+  fill: none;
+  marker-end: url(#arrowhead);
+}
+
+.relation-link:hover {
+  stroke: #E64A19;
+  stroke-width: 3;
+}
+
+/* Адаптивность */
+@media (max-width: 1000px) {
+  .relations-container {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+  }
+  
+  #tableWork {
+      width: 100%;
+  }
+}
+
+.hide{
+  display: none;
+}

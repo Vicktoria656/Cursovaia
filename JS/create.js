@@ -71,6 +71,8 @@ const Patterns = {
     CONTACTS: () => {
         if(previewTable.inserted) previewTable.remove()
         previewTable = new Table("Контакты")
+        previewTitle.textContent = "Контакты"
+
         previewTable.addCol('Имя', 'string')
         previewTable.addCol('Телефон', 'string')
         previewTable.addCol('Email', 'string')
@@ -85,7 +87,9 @@ const Patterns = {
 
     INVENTORY: () => {
         if(previewTable.inserted) previewTable.remove()
-        previewTable = new Table("Контакты")
+        previewTable = new Table("Склад")
+        previewTitle.textContent = "Склад"
+
         previewTable.addCol('Товар', 'string')
         previewTable.addCol('Количество', "number")
         previewTable.addCol('Цена', 'money')
@@ -101,6 +105,8 @@ const Patterns = {
     TASKS: () => {
         if(previewTable.inserted) previewTable.remove()
         previewTable = new Table("Задачи")
+        previewTitle.textContent = "Задачи"
+
         previewTable.addCol('Задача', 'string')
         previewTable.addCol('Срок', 'date')
         previewTable.addCol('Статус', 'boolean')
@@ -125,13 +131,36 @@ const selectTemplate = function(patternName) {
 const clearForm = function() {
     if(previewTable.inserted) previewTable.remove()
 }
-
 const createTable = function() {
     if(!previewTable.inserted) return;
+    const sidebar = document.querySelector('.sidebar ul')
+    for(let li of sidebar.children) {
+        if(li.textContent == previewTable.name) {
+            alert('Таблица с таким именем уже существует')
+            return
+        }
+    }
 
+
+    previewTitle.textContent = ""
     const mainContent = document.querySelector('div.main-content')
-    previewTable.remove
+    previewTable.remove()
     previewTable.buildTable(mainContent)
     previewTable.addInSidebar()
+    let table = previewTable
+    previewTable = new Table()
+
     
+    return table
 }
+
+selectTemplate('TASKS')
+let table = createTable()
+
+
+selectTemplate('INVENTORY')
+let table1 = createTable()
+console.log(JSON.stringify(table.table))
+table1.setPrimaryKey('Товар')
+table.addForeignKey('Задача', table1, 'Товар')
+

@@ -14,12 +14,7 @@ class Table {
         this.relations = [];
     }
 
-    // ... предыдущие методы (addCol, addRow, buildTable и др.) ...
 
-    /**
-     * Устанавливает первичный ключ для таблицы
-     * @param {string} colName - Имя колонки для первичного ключа
-     */
     setPrimaryKey(colName) {
         if (!this.table[colName]) {
             throw new Error(`Колонка "${colName}" не существует`);
@@ -34,12 +29,8 @@ class Table {
         this.table.primaryKey = colName;
     }
 
-    /**
-     * Добавляет внешний ключ для связи с другой таблицей
-     * @param {string} colName - Имя колонки в текущей таблице
-     * @param {Table} foreignTable - Связанная таблица
-     * @param {string} foreignCol - Имя колонки в связанной таблице
-     */
+
+
     addForeignKey(colName, foreignTable, foreignCol) {
         if (!this.table[colName]) {
             throw new Error(`Колонка "${colName}" не существует в текущей таблице`);
@@ -297,7 +288,8 @@ class Table {
         
         // Заголовки колонок
         for (const colName of columns) {
-            html += `<th>${colName}</th>`;
+            if(colName == this.table.primaryKey) html += `<th>${colName}🔑</th>`;
+            else html += `<th>${colName}</th>`;
         }
         html += '</tr></thead><tbody>';
 
@@ -433,15 +425,43 @@ class Table {
                 text: 'Добавить строку',
                 action: () => {
                     this.addEmptyRow();
-                    this.buildTable(this.container.parentElement);
+                    let parentElement = this.container.parentElement
+                    this.remove();
+                    this.buildTable(parentElement);  
                 }
+            },
+            {
+                text: 'Установить вторичный ключ',
+                action: () => {
+                    const colName = contextMenu.dataset.col;
+                    const foreignTable = prompt('Название вторичной таблицы')
+                    const foreignСol = prompt('Название колонки')
+                    this.addForeignKey(colName, foreignTable, foreignСol)
+                    let parentElement = this.container.parentElement
+                    this.remove();
+                    this.buildTable(parentElement);   
+                }
+            },
+            {
+                
+                    text: 'Установить первичный ключ',
+                    action: () => {
+                        const colName = contextMenu.dataset.col;
+                        this.setPrimaryKey(colName)
+                        let parentElement = this.container.parentElement
+                        this.remove();
+                        this.buildTable(parentElement); 
+                    }
+                
             },
             {
                 text: 'Удалить строку',
                 action: () => {
                     const rowIndex = parseInt(contextMenu.dataset.row);
                     this.deleteRow(rowIndex);
-                    this.buildTable(this.container.parentElement);
+                    let parentElement = this.container.parentElement
+                    this.remove();
+                    this.buildTable(parentElement);                
                 }
             },
             {
@@ -451,8 +471,9 @@ class Table {
                     if (colName) {
                         const colType = prompt('Введите тип данных (string, number, boolean):');
                         this.addCol(colName, colType);
-                        this.buildTable(this.container.parentElement);
-                    }
+                        let parentElement = this.container.parentElement
+                        this.remove();
+                        this.buildTable(parentElement);                    }
                 }
             },
             {
@@ -509,7 +530,7 @@ class Table {
     addEmptyRow() {
         const columns = Object.keys(this.table)
         columns.forEach(col => {
-            this.table[col].rows.push('');
+            this.table[col].rows.push(Math.random()); 
         });
         this.table.rowsLength++;
     }
@@ -522,6 +543,77 @@ class Table {
         this.table.rowsLength--;
     }
 
+    #sidebarContextMenu(li) {
+        const contextMenu = document.createElement('div');
+        contextMenu.className = 'context-menu';
+        contextMenu.style.display = 'none';
+        document.body.appendChild(contextMenu);
+    
+        // Функции для пунктов меню
+        const menuItems = [
+            {
+                text: 'Удалить таблицу',
+                action: () => {
+                    const tableId = contextMenu.dataset.table;
+                    if (confirm(`Удалить таблицу "${tableId}"?`)) {
+                        this.remove()
+                        const li = document.querySelector(`.sidebar li[data-table="${tableId}"]`);
+                        if (li) li.remove();
+                        currentLi = null
+                    }
+                }
+            },
+            {
+                text: 'Переименовать таблицу',
+                action: () => {
+                    const tableName = this.name
+                    const newName = prompt('Введите новое название таблицы:', tableName);
+                    if (newName && newName !== tableName) {
+                        const li = document.querySelector(`.sidebar li[data-table="${this.tableId}"]`);
+                        console.log(li)
+                        if (li)       li.textContent = newName;
+                        
+                    }
+                }
+            }
+        ];
+    
+        // Создаем пункты меню
+        menuItems.forEach(item => {
+            const menuItem = document.createElement('div');
+            menuItem.className = 'context-menu-item';
+            menuItem.textContent = item.text;
+            menuItem.addEventListener('click', item.action);
+            contextMenu.appendChild(menuItem);
+        });
+    
+        // Обработчик контекстного меню для элементов сайдбара
+        li.addEventListener('contextmenu', (ev) => {
+            ev.preventDefault();
+            
+            const target = ev.target.closest('li');
+            if (!target) return;
+    
+            // Позиционируем меню
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = `${ev.pageX}px`;
+            contextMenu.style.top = `${ev.pageY}px`;
+    
+            // Сохраняем данные о выбранной таблице
+            contextMenu.dataset.table = target.dataset.table;
+        });
+    
+        // Скрываем меню при клике вне его
+        document.addEventListener('click', (ev) => {
+            if (!contextMenu.contains(ev.target)) {
+                contextMenu.style.display = 'none';
+            }
+        
+        
+        });
+
+       
+    }
     
 
     
@@ -531,9 +623,11 @@ class Table {
         const newLi = document.createElement('li')
         newLi.textContent = this.name
         newLi.dataset.table = this.tableId
+        this.#sidebarContextMenu(newLi)
         
         
         List.insertAdjacentElement('beforeend', newLi)
+        tableManager.push(this)
 
         newLi.click()
     }
@@ -544,3 +638,4 @@ class Table {
     }
 }
 
+const tableManager = []
