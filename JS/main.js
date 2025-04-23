@@ -285,6 +285,7 @@ class Table {
         this.tableId = 'editable-table-' + Math.random().toString(36).substr(2, 9);
         
         let html = `<table id="${this.tableId}"><thead><tr>`;
+
         
         // Заголовки колонок
         for (const colName of columns) {
@@ -299,7 +300,7 @@ class Table {
             for (const colName of columns) {
                 const col = this.table[colName];
                 let value = col.rows[i] !== undefined ? col.rows[i] : '';
-                
+               
                 // Форматирование для типа money
                 if (col.type === 'money' && value !== '') {
                     value = `${value}$`;
@@ -318,6 +319,7 @@ class Table {
             }
             html += '</tr>';
         }
+        
         
         html += '</tbody></table>';
         this.container.innerHTML = html;
@@ -530,7 +532,7 @@ class Table {
     addEmptyRow() {
         const columns = Object.keys(this.table)
         columns.forEach(col => {
-            this.table[col].rows.push(Math.random()); 
+            this.table[col].rows.push(); 
         });
         this.table.rowsLength++;
     }
@@ -574,6 +576,24 @@ class Table {
                         if (li)       li.textContent = newName;
                         
                     }
+                }
+            },
+            {
+                text: 'Экспортировать как JSON',
+                action: () => {
+                    const textFile = JSON.stringify(this.table)
+
+                    const file = new File([textFile], "table")
+
+                    
+                    let a = document.createElement('a')
+                    a.href = URL.createObjectURL(file)
+                    a.download = `${this.name}.json`
+
+                    a.click()
+                   
+                    
+                    
                 }
             }
         ];
